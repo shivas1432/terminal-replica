@@ -2,6 +2,10 @@
 
 A minimalist web-based terminal interface with a glowing blue border aesthetic. Simulates basic terminal commands and interaction, built entirely with HTML, CSS, and JavaScript.
 
+## 📸 Preview
+
+![Preview](./img/image.png)
+
 ## 🔧 Features
 
 - Terminal-style UI with blue neon borders
