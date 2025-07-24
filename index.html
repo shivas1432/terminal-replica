@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTW Terminal - Minimal Blue Borders</title>
+    <link rel="icon" href="./img/favicon.png" type="image/x-icon" />
+    <style>
+        ::selection {
+            background: #0066cc;
+            color: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-size: 13pt;
+            font-family: 'Courier New', monospace;
+            color: #ffffff;
+            background-color: #000000;
+            position: relative;
+        }
+
+        #container {
+            padding: 1em 1.5em 1em 1em;
+            margin-left: 50px;
+            margin-right: 135px;
+            min-height: calc(100vh - 40px);
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #0066cc;
+            border-radius: 8px;
+            background-color: #000000;
+            box-shadow: 
+                0 0 10px rgba(0, 102, 204, 0.3),
+                inset 0 0 5px rgba(0, 102, 204, 0.1);
+        }
+
+        #cmdline {
+            outline: none;
+            background-color: transparent;
+            margin: 0;
+            width: 100%;
+            font: inherit;
+            border: none;
+            color: #ffffff;
+        }
+
+        #output {
+            clear: both;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        #prompt {
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+
+        .prompt-color {
+            color: #0066cc;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: stretch;
+            clear: both;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            padding: 5px 8px;
+            background-color: #000000;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.2);
+        }
+
+        .input-line > div:nth-child(2) {
+            flex: 1;
+        }
+
+        #githubImg {
+            position: fixed !important;
+            bottom: 0 !important;
+            right: 0 !important;
+            z-index: 1000;
+        }
+
+        #githubImg img {
+            border: 1px solid #0066cc;
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(0, 102, 204, 0.3);
+        }
+
+        /* SIDE NAV */
+        #sidenavBtn {
+            position: absolute !important;
+            padding: 2px !important;
+            top: 0 !important;
+            right: 7px !important;
+            font-size: 35px !important;
+            background: none !important;
+            border: none !important;
+            color: #0066cc !important;
+            cursor: pointer !important;
+        }
+
+        #sidenav {
+            height: 100%;
+            width: 50px;
+            position: fixed;
+            z-index: 9;
+            top: 0;
+            left: 0;
+            background-color: #000000;
+            border-right: 1px solid #0066cc;
+            box-shadow: 0 0 8px rgba(0, 102, 204, 0.2);
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+
+        #sidenav img {
+            display: block;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 100px;
+            transition: 0.3s;
+            border: 1px solid #0066cc;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+        }
+
+        #sidenav img:focus {
+            outline: 1px solid #0066cc;
+            outline-offset: 2px;
+        }
+
+        #sidenav button {
+            padding: 8px 8px 8px 32px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 15pt;
+            color: #ffffff;
+            display: block;
+            transition: 0.3s;
+            background: none !important;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        #sidenav button:hover {
+            color: #0066cc;
+        }
+
+        /* Terminal text effects */
+        .terminal-text {
+            color: #ffffff;
+        }
+
+        .command-output {
+            color: #cccccc;
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-height: 450px) {
+            body {
+                font-size: 11pt;
+            }
+            #sidenav {
+                padding-top: 15px;
+            }
+            #sidenav button {
+                font-size: 13px;
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            #githubImg img {
+                transform: translateX(900px);
+            }
+            #container {
+                margin-right: 0;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            #container {
+                margin-left: 60px;
+                margin-right: 10px;
+                padding: 1em;
+            }
+            body {
+                font-size: 12pt;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="sidenav">
+        <button id="sidenavBtn">&#9776;</button>
+        <img id="profilePic" alt="An avatar that aims to represent the website owner" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCAzNSAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTcuNSIgY3k9IjE3LjUiIHI9IjE3LjUiIGZpbGw9IiMwMDY2Y2MiLz4KPGV5ZXMgY3g9IjEyIiBjeT0iMTMiIHI9IjIiIGZpbGw9IiNmZmYiLz4KPGV5ZXMgY3g9IjIzIiBjeT0iMTMiIHI9IjIiIGZpbGw9IiNmZmYiLz4KPHBhdGggZD0iTTEyIDIyIFExNy41IDI2IDIzIDIyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=">
+    </div>
+    
+    <div id="container">
+        <div id="output">
+            <div class="terminal-text">
+                <p>Welcome to Terminal</p>
+                <p>Type 'help' to get started</p>
+            </div>
+        </div>
+        
+        <div id="input-line" class="input-line">
+            <div id="prompt" class="prompt-color">user@terminal:~$</div>&nbsp;
+            <div>
+                <input type="text" id="cmdline" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus/>
+            </div>
+        </div>
+    </div>
+    
+    <a id="githubImg" target="_blank" href="https://github.com/luisbraganca/fake-terminal-website/">
+        <img alt="Fork me on GitHub" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjcwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjMDAwIiBzdHJva2U9IiMwMDY2Y2MiIHN0cm9rZS13aWR0aD0iMiIgcng9IjUiLz4KPHN2ZyB4PSIxNSIgeT0iMTUiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDA2NmNjIj4KPHBhdGggZD0iTTEyIDJDNi40NzcgMiAyIDYuNDg0IDIgMTIuMDE3YzAgNC40MjUgMi44NjUgOC4xOCA2Ljg0OSA5LjUwNEwyMiAxMloiLz4KPC9zdmc+CjwvZz4KPC9zdmc+">
+    </a>
+
+    <script>
+        // Terminal functionality
+        const cmdline = document.getElementById('cmdline');
+        const output = document.getElementById('output');
+
+        const commands = {
+            help: 'Available commands: help, clear, about, contact, ls',
+            clear: () => {
+                output.innerHTML = '<div class="terminal-text"><p>Terminal cleared</p></div>';
+            },
+            about: 'Simple terminal interface with minimal blue border lighting.',
+            contact: 'Email: contact@example.com',
+            ls: 'documents/  projects/  downloads/'
+        };
+
+        cmdline.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.toLowerCase().trim();
+                
+                // Show command
+                const newLine = document.createElement('div');
+                newLine.innerHTML = `<span class="prompt-color">user@terminal:~$ </span><span class="terminal-text">${this.value}</span>`;
+                output.appendChild(newLine);
+
+                // Show response
+                const response = document.createElement('div');
+                response.className = 'command-output';
+                
+                if (commands[command]) {
+                    if (typeof commands[command] === 'function') {
+                        commands[command]();
+                    } else {
+                        response.innerHTML = commands[command];
+                        output.appendChild(response);
+                    }
+                } else if (command) {
+                    response.innerHTML = `bash: ${command}: command not found`;
+                    output.appendChild(response);
+                }
+
+                this.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        // Sidebar functionality
+        const sidenavBtn = document.getElementById('sidenavBtn');
+        const sidenav = document.getElementById('sidenav');
+        let isOpen = false;
+
+        sidenavBtn.addEventListener('click', function() {
+            if (isOpen) {
+                sidenav.style.width = '50px';
+                document.getElementById('container').style.marginLeft = '50px';
+                isOpen = false;
+            } else {
+                sidenav.style.width = '200px';
+                document.getElementById('container').style.marginLeft = '200px';
+                isOpen = true;
+            }
+        });
+
+        // Focus management
+        window.addEventListener('load', function() {
+            cmdline.focus();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#sidenav') && !e.target.closest('#githubImg')) {
+                cmdline.focus();
+            }
+        });
+    </script>
+</body>
+</html>
